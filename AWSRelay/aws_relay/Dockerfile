@@ -1,9 +1,6 @@
 # ----------------------------------------------------------------------
 #
-#    Installation script -- This file is part of the Power Monitoring
-#    (Basic solution) distribution. It contains all the bash commands 
-#    needed to deploy the solution on a Raspberry Pi 4b with raspbian
-#    OS version 11 (bullseye) 32 bits.
+#    Dockerfile script -- This file is part of the Shoestring AWS Uploader 
 #
 #    Copyright (C) 2022  Shoestring and University of Cambridge
 #
@@ -21,11 +18,11 @@
 #
 # ----------------------------------------------------------------------
 
-sudo  apt-get update
-sudo curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
-sudo usermod -aG docker pi
-sudo apt-get install -y libffi-dev libssl-dev
-sudo apt-get install -y python3 python3-pip
-sudo apt-get remove python-configparser
-sudo apt install docker-compose
-pip3 install paho-mqtt
+FROM digitalshoestring/shoestring-aws-relay:v1.0.0
+
+COPY ./requirements.txt /
+RUN pip3 install -r requirements.txt
+WORKDIR /app
+ADD ./code/ /app
+
+CMD [ "python3", "/app/main.py"]

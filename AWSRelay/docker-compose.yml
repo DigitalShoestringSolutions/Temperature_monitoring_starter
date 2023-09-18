@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  aws_relay:
+    extends:
+      file: aws_relay/app.yml
+      service: app
+    networks:
+      default:
+         ipv4_address: 172.18.0.20
+    logging:
+      driver: syslog
+      options:
+        tag: docker-aws-relay
+    restart: unless-stopped
+
+networks:
+  default:
+    name: shoestring-internal
+    external: true
