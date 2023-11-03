@@ -2,7 +2,7 @@
 import math
 from smbus2 import SMBus
 from mlx90614 import MLX90614
-# from w1thermsensor import W1ThermSensor
+from w1thermsensor import W1ThermSensor
 import max6675
 import adafruit_ahtx0
 import board
@@ -74,14 +74,14 @@ class sht30:
 
 
 
-# class W1Therm:
-    # def __init__(self):
-        # self.sensor = W1ThermSensor()
+class W1Therm:
+    def __init__(self):
+        self.sensor = W1ThermSensor()
         
 
-    # def ambient_temp(self):
-        # logger.info("TemperatureMeasureBuildingBlock- w1therm started")
-        # return self.sensor.get_temperature()
+    def ambient_temp(self):
+        logger.info("TemperatureMeasureBuildingBlock- w1therm started")
+        return self.sensor.get_temperature()
 
 
 

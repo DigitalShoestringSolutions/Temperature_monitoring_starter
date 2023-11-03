@@ -110,8 +110,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
         if self.config['sensing']['adc'] == 'MLX90614_temp':
             sensor = sen.MLX90614_temp()
-        # elif self.config['sensing']['adc'] == 'W1ThermSensor':
-            # sensor = sen.W1Therm()
+        elif self.config['sensing']['adc'] == 'W1ThermSensor':
+            sensor = sen.W1Therm()
         elif self.config['sensing']['adc'] == 'K-type':
             sensor = sen.k_type()
         elif self.config['sensing']['adc'] == 'AHT20':
@@ -120,7 +120,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             sensor = sen.PT100_arduino()
 
         else:
-            raise Exception(f'ADC "{config["sensing"]["adc"]}" not recognised/supported')
+            raise Exception(f'ADC "{self.config["sensing"]["adc"]}" not recognised/supported')
 
         num_samples = 0
         sample_accumulator = 0
