@@ -1,1 +1,1 @@
-# Power Monitoring Starter Solution
+# Temperature Monitoring Starter Solution
