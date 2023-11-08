@@ -169,7 +169,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 # convert
                 # results = calculation.calculate(average_sample)
                 # payload = {**results, **self.constants, "timestamp": timestamp}
-                payload = {"machine": self.constants['machine'], "Temperature": str(average_sample), "AlertStatus": str(AlertVal), "Threshold": str(Threshold), "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
+                payload = {"machine": self.constants['machine'], "temp": str(average_sample), "AlertVal": str(AlertVal), "Threshold": str(Threshold), "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
 
                 # send
                 output = {"path": "", "payload": payload}
