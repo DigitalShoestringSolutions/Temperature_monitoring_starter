@@ -2,7 +2,7 @@
     machine="Machine_1"	#Name of the machine being monitored (can't have spaces)
 
 [threshold]
-    th1 = 30  #for 1 sensor
+    th1 = 50  #for 1 sensor
 
 
 [adc]
@@ -23,6 +23,10 @@
 [sampling]
     sample_count = 1
     sample_interval = 1
+
+[type]
+    #default is ambientTemperature
+    type = "processTemperature"
 
 [calculation]
     amplifier_gain = 1

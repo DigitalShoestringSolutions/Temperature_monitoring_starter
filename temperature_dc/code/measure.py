@@ -132,14 +132,27 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
 
             # Collect samples from ADC
-            try:
-                sample = sensor.ambient_temp()
-                # sample = sensor
-                logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
-                sample_accumulator += sample
-                num_samples+=1
-            except Exception as e:
-                logger.error(f"Sampling led to exception{e}")
+            
+            if self.config['type']['type'] == 'processTemperature':
+
+                # Collect samples from ADC
+                try:
+                    sample = sensor.object_temp()
+                    # sample = sensor
+                    logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
+                    sample_accumulator += sample
+                    num_samples+=1
+                except Exception as e:
+                    logger.error(f"Sampling led to exception{e}")
+            else:
+                try:
+                    sample = sensor.ambient_temp()
+                    # sample = sensor
+                    logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
+                    sample_accumulator += sample
+                    num_samples+=1
+                except Exception as e:
+                    logger.error(f"Sampling led to exception{e}")
 
             # handle timestamps and timezones
             if time.time() > next_check:
