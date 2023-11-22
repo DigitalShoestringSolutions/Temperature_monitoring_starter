@@ -6,14 +6,14 @@
 
 
 [adc]
-    # uncomment the adc that you are using (default is BCRobotics)
+    # uncomment the adc that you are using (default is GroveADC)
     #adc_module = "BCRoboticsADC"
     adc_module = "GroveADC"
     #adc_module = "GravityADC"
     channel = 1
 
 [sensing]
-    # uncomment the adc that you are using (default is MLX90614)
+    # uncomment the sensor that you are using (default is DS18B20)
     adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
     #adc = "PT100_arduino"
     #adc = "AHT20"
@@ -27,6 +27,7 @@
 [type]
     #default is ambientTemperature
     type = "processTemperature"
+    type = "ambientTemperature"
 
 [calculation]
     amplifier_gain = 1
