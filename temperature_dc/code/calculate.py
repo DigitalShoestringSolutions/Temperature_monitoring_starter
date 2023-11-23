@@ -103,12 +103,6 @@ class aht20:
 class TemperatureMonitoringCalculation:
 
     def __init__(self, config):
-        # calculation_conf = config['calculation']
-        # self.AmplifierGain = calculation_conf['amplifier_gain']
-        # self.CTRange = calculation_conf['current_range']
-        # self.phases = calculation_conf['phases']
-        # self.lineVoltage = calculation_conf['voltage']
-        self.
 
 
     def do_run(conf):

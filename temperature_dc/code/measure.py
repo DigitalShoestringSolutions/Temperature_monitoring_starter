@@ -65,7 +65,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
         self.collection_interval = config['sampling']['sample_interval']
         self.sample_count = config['sampling']['sample_count']
-        self.adc_module = config['adc']['adc_module']
+
        
 
         # logger.info("TemperatureMeasureBuildingBlock- STAGE-1 done")
@@ -95,14 +95,14 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
         period = self.collection_interval
 
         # get correct ADC module
-        try:
-            adc_module = importlib.import_module(f"adc.{self.adc_module}")
-            logger.debug(f"Imported {self.adc_module}")
-        except ModuleNotFoundError as e:
-            logger.error(f"Unable to import module {self.adc_module}. Stopping!!")
-            return
+        #try:
+        #    adc_module = importlib.import_module(f"adc.{self.adc_module}")
+        #    logger.debug(f"Imported {self.adc_module}")
+        #except ModuleNotFoundError as e:
+        #    logger.error(f"Unable to import module {self.adc_module}. Stopping!!")
+        #    return
 
-        adc = adc_module.ADC(self.config)
+        #adc = adc_module.ADC(self.config)
 
         #---------------- TEST MODULE 2 -------------------
 
@@ -139,20 +139,22 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 try:
                     sample = sensor.object_temp()
                     # sample = sensor
-                    logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
+                    logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
+                    sample_accumulator += sample
+                    num_samples+=1
+                except Exception as e:
+                    logger.error(f"Sampling led to exception{e}")
+            elif self.config['type']['type'] == 'ambientTemperature':
+                try:
+                    sample = sensor.ambient_temp()
+                    # sample = sensor
+                    logger.info("Ambient TemperatureMeasureBuildingBlock- STAGE-3 done")
                     sample_accumulator += sample
                     num_samples+=1
                 except Exception as e:
                     logger.error(f"Sampling led to exception{e}")
             else:
-                try:
-                    sample = sensor.ambient_temp()
-                    # sample = sensor
-                    logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
-                    sample_accumulator += sample
-                    num_samples+=1
-                except Exception as e:
-                    logger.error(f"Sampling led to exception{e}")
+                logger.info("config ambient or process temperature first!")
 
             # handle timestamps and timezones
             if time.time() > next_check:

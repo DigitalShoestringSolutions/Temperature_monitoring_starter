@@ -5,13 +5,6 @@
     th1 = 50  #for 1 sensor
 
 
-[adc]
-    # uncomment the adc that you are using (default is GroveADC)
-    #adc_module = "BCRoboticsADC"
-    adc_module = "GroveADC"
-    #adc_module = "GravityADC"
-    channel = 1
-
 [sensing]
     # uncomment the sensor that you are using (default is DS18B20)
     adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
@@ -25,20 +18,13 @@
     sample_interval = 1
 
 [type]
-    #default is ambientTemperature
     #type = "processTemperature"
     type = "ambientTemperature"
 
-[calculation]
-    amplifier_gain = 1
-    current_range = 1	#nominal rating of the Current Clamp
-    phases = 1
-    voltage = 1
 
 
 [computing]
 	hardware="Pi4"
-	#hardware="Rock4C+"
 
 [mqtt]
     broker = "mqtt.docker.local"
