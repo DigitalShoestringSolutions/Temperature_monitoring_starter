@@ -210,7 +210,7 @@
           "refId": "A"
         }
       ],
-      "title": "Alert Satus & Temperature Value",
+      "title": "Alert Status & Temperature Value",
       "type": "stat"
     },
     {
