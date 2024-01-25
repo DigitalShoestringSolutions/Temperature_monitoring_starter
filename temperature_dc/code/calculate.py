@@ -6,8 +6,10 @@
 #    taken action upon. This version can work for 4 types of temperature sensors (now)
 #    which include k-type, RTD, ambient (AHT20), and NIR-based sensors. 
 #    The solution provides a Grafana dashboard that 
-#    displays the temperature timeseries, set threshold value, and a state timeline showing the chnage in temperature.
-#    An InfluxDB database is used to store timestamp, temperature, threshold and status. 
+#    displays the temperature timeseries, set threshold value, and a state timeline showing 
+#    the chnage in temperature. An InfluxDB database is used to store timestamp, temperature, 
+#    threshold and status. 
+#
 #
 #    Copyright (C) 2022  Shoestring and University of Cambridge
 #
@@ -25,31 +27,18 @@
 #
 # ----------------------------------------------------------------------
 
-import time
+import logging
+import math
 from smbus2 import SMBus
 from mlx90614 import MLX90614
-import os
 from w1thermsensor import W1ThermSensor
-import board
-import digitalio
-import logging
-import tomli
 import max6675
 import adafruit_ahtx0
+import board
 
 
 
-
-logging.basicConfig(level=logging.DEBUG)  
-logger = logging.getLogger("analysis.baseline");
-logging.getLogger("matplotlib").setLevel(logging.WARNING)
-
-def get_config():
-    with open("/app/config/config.toml", "rb") as f:
-        toml_conf = tomli.load(f)
-    logger.info(f"config:{toml_conf}")
-    return toml_conf
-    
+logger = logging.getLogger("main.measure.conversion")
 
 class MLX90614_temp:
     def __init__(self):
@@ -102,55 +91,64 @@ class k_type:
 
 class aht20:
     def __init__(self):
+        # self.bus = SMBus(1)
+        # self.sensor=adafruit_ahtx0.AHTx0(self.bus,address=0x38)
         i2c = board.I2C()
         self.sensor = adafruit_ahtx0.AHTx0(i2c)
         
     def ambient_temp(self):
         return self.sensor.temperature
-        
+         
+
+class TemperatureMonitoringCalculation:
+
+    def __init__(self, config):
 
 
-def do_run(conf):
+    def do_run(conf):
     
-    machine_name = conf['machine'].get('name',"Machine Name Not Set")
-    
-    Threshold = conf['threshold']['t1']                # User sets the threshold in the config file
-    
-    if conf['sensing']['adc'] == 'MLX90614_temp':
-        adc = MLX90614_temp()
-    elif conf['sensing']['adc'] == 'W1ThermSensor':
-        adc = W1Therm()
-    elif conf['sensing']['adc'] == 'K-type':
-        adc = k_type()
-    elif conf['sensing']['adc'] == 'AHT20':
-        adc = aht20()
-    elif conf['sensing']['adc'] == 'SHT30':
-        adc = sht30()
-    else:
-        raise Exception(f'ADC "{conf["sensing"]["adc"]}" not recognised/supported')
-    
-    
-    #todo: error check on loaded in config
-  
-    while True:
+        # machine_name = conf['machine'].get('name',"Machine Name Not Set")
         
+        Threshold = conf['threshold']['t1']                # User sets the threshold in the config file
+        
+        if conf['sensing']['adc'] == 'MLX90614_temp':
+            adc = MLX90614_temp()
+        elif conf['sensing']['adc'] == 'W1ThermSensor':
+            adc = W1Therm()
+        elif conf['sensing']['adc'] == 'K-type':
+            adc = k_type()
+        elif conf['sensing']['adc'] == 'AHT20':
+            adc = aht20()
+        # elif conf['sensing']['adc'] == 'SHT30':
+        #     adc = sht30()
+        else:
+            raise Exception(f'ADC "{conf["sensing"]["adc"]}" not recognised/supported')
+        
+        
+        #todo: error check on loaded in config
+    
+        # while True:
+            
         AmbientTemp = adc.ambient_temp()
+        print(AmbientTemp)
         # ObjectTemp = adc.object_temp()
         if AmbientTemp > float(Threshold):
             AlertVal = 1
         else:
             AlertVal = 0
 
+            
+
+
+
+
+    def calculate(self, ADCAverageVoltage):
+        AmplifierVoltageIn = ADCAverageVoltage / self.AmplifierGain
+        CTClampCurrent = AmplifierVoltageIn * self.CTRange
+        RMSCTClampCurrent = CTClampCurrent * self.one_over_sqrt_2
+
+        PowerValue = self.phases * RMSCTClampCurrent * self.lineVoltage
         logger.info(f"temperature_reading: {AmbientTemp}")
-        var = "curl -i -XPOST 'http://172.18.0.2:8086/write?db=emon' --data '"+machine_name+" temp="+str(AmbientTemp)+",threshold="+str(Threshold)+",alertStatus="+str(AlertVal)+"'"
-        os.system(var)
-        time.sleep(1)
+        logger.debug(f"Temp: {AmbientTemp} Threshold: {Threshold} AlertStatus: {AlertVal}")
+        return {"Temperature": str(AmbientTemp), "AlertStatus": str(AlertVal)}
 
-
-def run():
-    conf = get_config()
-    do_run(conf)
-
-if __name__ == "__main__":
-    run()
- 
