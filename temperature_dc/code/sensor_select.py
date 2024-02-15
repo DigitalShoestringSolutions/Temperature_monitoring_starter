@@ -110,7 +110,7 @@ class PT100_raspi:
 
     def __init__(self):
         MyMax = MAX31865.max31865()
-        MyMax.set_config(VBias=1, continous=1, filter=50Hz)
+        MyMax.set_config(VBias=1, continous=1, filter50Hz=1)
         MyRTD = MAX31865.PT_RTD(100)
 
     def ambient_temp(self):
