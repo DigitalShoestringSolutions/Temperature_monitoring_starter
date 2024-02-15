@@ -109,16 +109,16 @@ class PT100_arduino:
 class PT100_raspi:
 
     def __init__(self):
-        MyMax = MAX31865.max31865()
-        MyMax.set_config(VBias=1, continous=1, filter50Hz=1)
-        MyRTD = MAX31865.PT_RTD(100)
+        self.MyMax = MAX31865.max31865()
+        self.MyMax.set_config(VBias=1, continous=1, filter50Hz=1)
+        self. = MAX31865.PT_RTD(100)
 
     def ambient_temp(self):
         logger.into("TemperatureMeasureBuildingBlock- PT100_raspi started")
-        return MyRTD(MyMax())
+        return self.MyRTD(self.MyMax())
 
     def close(self):
-        MyMax.spi.close()
+        self.MyMax.spi.close()
 
 
 class aht20:
