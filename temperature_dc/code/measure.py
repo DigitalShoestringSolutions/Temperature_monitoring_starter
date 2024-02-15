@@ -118,6 +118,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             sensor = sen.aht20()
         elif self.config['sensing']['adc'] == 'PT100_arduino':
             sensor = sen.PT100_arduino()
+        elif self.config['sensing']['adc'] == 'PT100_raspi':
+            sensor = sen.PT100_raspi()
 
         else:
             raise Exception(f'ADC "{self.config["sensing"]["adc"]}" not recognised/supported')

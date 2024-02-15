@@ -4,6 +4,7 @@ from smbus2 import SMBus
 from mlx90614 import MLX90614
 from w1thermsensor import W1ThermSensor
 import max6675
+import MAX31865
 import adafruit_ahtx0
 import board
 import logging
@@ -37,12 +38,12 @@ class k_type:
         self.I2C_1       = 0x01
         self.I2C_ADDRESS = 0x10
         #Create MAX31855 object
-        self.max31855 = local_lib.DFRobot_MAX31855(self.I2C_1 ,self.I2C_ADDRESS) 
-        
+        self.max31855 = local_lib.DFRobot_MAX31855(self.I2C_1 ,self.I2C_ADDRESS)
+
 
     def ambient_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- k-type started")
-        return self.max31855.read_celsius() 
+        return self.max31855.read_celsius()
 
 
 
@@ -57,7 +58,7 @@ class MLX90614_temp:
 
     def object_temp(self):
         return self.sensor.get_obj_temp()
-        
+
 
 
 class sht30:
@@ -77,7 +78,7 @@ class sht30:
 class W1Therm:
     def __init__(self):
         self.sensor = W1ThermSensor()
-        
+
 
     def ambient_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- w1therm started")
@@ -89,7 +90,7 @@ class PT100_arduino:
 
     def __init__(self):
         self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=1)
-    
+
     def ambient_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- PT100_arduino started")
         with self.ser as ser:
@@ -105,7 +106,19 @@ class PT100_arduino:
         self.ser.close()
 
 
+class PT100_raspi:
 
+    def __init__(self):
+        MyMax = MAX31865.max31865()
+        MyMax.set_config(VBias=1, continous=1, filter=50Hz)
+        MyRTD = MAX31865.PT_RTD(100)
+
+    def ambient_temp(self):
+        logger.into("TemperatureMeasureBuildingBlock- PT100_raspi started")
+        return MyRTD(MyMax())
+
+    def close(self):
+        MyMax.spi.close()
 
 
 class aht20:
@@ -114,7 +127,7 @@ class aht20:
         # self.sensor=adafruit_ahtx0.AHTx0(self.bus,address=0x38)
         i2c = board.I2C()
         self.sensor = adafruit_ahtx0.AHTx0(i2c)
-        
+
     def ambient_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- aht20 started")
         return self.sensor.temperature
