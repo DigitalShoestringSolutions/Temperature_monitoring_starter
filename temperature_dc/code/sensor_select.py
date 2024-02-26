@@ -127,6 +127,16 @@ class PT100_raspi:
         self.MyMax.spi.close()
 
 
+class PT100_raspi_sequentmicrosystems_HAT:
+
+    def __init__(self):
+        import adc.SequentMicrosystemsRTDHAT as RTDHAT
+        self.RTD_ADC = RTDHAT
+
+    def ambient_temp(self):
+        return self.RTD_ADC.get_poly5(0, 6) # hard coding first layer, channel "RTD6". To be made configurable.
+
+
 class aht20:
     def __init__(self):
         import board
