@@ -19,8 +19,9 @@
     sample_interval = 1
 
 [type]
-    #type = "processTemperature"
-    type = "ambientTemperature"
+    type = "contactTemperature"
+    #type = "airTemperature"
+    #type = "radiativeTemperature"
 
 [computing]
 	hardware="Pi4"

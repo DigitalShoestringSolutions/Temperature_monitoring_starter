@@ -43,7 +43,7 @@ class k_type:
         self.max31855 = DFRobot_MAX31855(self.I2C_1 ,self.I2C_ADDRESS)
 
 
-    def ambient_temp(self):
+    def contact_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- k-type started")
         return self.max31855.read_celsius()
 
@@ -55,11 +55,12 @@ class MLX90614_temp:
         self.bus = SMBus(1)
         self.sensor=MLX90614(self.bus,address=0x5a)
 
-    def ambient_temp(self):
+    def contact_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- MLX90614_temp started")
         return self.sensor.get_amb_temp()
 
-    def object_temp(self):
+    def radiative_temp(self):
+        logger.info("TemperatureMeasureBuildingBlock- MLX90614_temp started")
         return self.sensor.get_obj_temp()
 
 
@@ -71,7 +72,7 @@ class sht30:
         time.sleep(0.5)
         self.data = self.bus.read_i2c_block_data(0x44, 0x00, 6)
 
-    def ambient_temp(self):
+    def air_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- SHT30 started")
         self.temp = self.data[0] * 256 + self.data[1]
         return -45 + (175 * self.temp / 65535.0)
@@ -84,7 +85,7 @@ class W1Therm:
         self.sensor = W1ThermSensor()
 
 
-    def ambient_temp(self):
+    def contact_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- w1therm started")
         return self.sensor.get_temperature()
 
@@ -96,7 +97,7 @@ class PT100_arduino:
         import serial
         self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=1)
 
-    def ambient_temp(self):
+    def contact_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- PT100_arduino started")
         with self.ser as ser:
             if ser.isOpen():
@@ -119,7 +120,7 @@ class PT100_raspi:
         self.MyMax.set_config(VBias=1, continous=1, filter50Hz=1)
         self.MyRTD = MAX31865.PT_RTD(100)
 
-    def ambient_temp(self):
+    def contact_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- PT100_raspi started")
         return self.MyRTD(self.MyMax())
 
@@ -133,7 +134,7 @@ class PT100_raspi_sequentmicrosystems_HAT:
         import adc.SequentMicrosystemsRTDHAT as RTDHAT
         self.RTD_ADC = RTDHAT
 
-    def ambient_temp(self):
+    def contact_temp(self):
         return self.RTD_ADC.get_poly5(0, 6) # hard coding first layer, channel "RTD6". To be made configurable.
 
 
@@ -146,6 +147,6 @@ class aht20:
         i2c = board.I2C()
         self.sensor = adafruit_ahtx0.AHTx0(i2c)
 
-    def ambient_temp(self):
+    def air_temp(self):
         logger.info("TemperatureMeasureBuildingBlock- aht20 started")
         return self.sensor.temperature
