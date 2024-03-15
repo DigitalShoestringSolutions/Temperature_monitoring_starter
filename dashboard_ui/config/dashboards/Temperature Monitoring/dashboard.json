@@ -115,7 +115,7 @@
           "refId": "A"
         }
       ],
-      "title": "Ambient temperature",
+      "title": "Temperature",
       "type": "timeseries"
     },
     {
