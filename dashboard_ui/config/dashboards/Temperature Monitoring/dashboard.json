@@ -115,7 +115,7 @@
           "refId": "A"
         }
       ],
-      "title": "Ambient temperature",
+      "title": "Temperature History",
       "type": "timeseries"
     },
     {
@@ -194,7 +194,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^temp \\{Threshold=\"50\", machine=\"Machine_1\", sensor=\"MLX90614_temp\"\\}$/",
+          "fields": "",
           "values": false
         },
         "textMode": "auto"
@@ -206,7 +206,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -294,7 +294,7 @@
           "refId": "A"
         }
       ],
-      "title": "Alert Timeline",
+      "title": "Alert History",
       "type": "state-timeline"
     },
     {
@@ -409,13 +409,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 7,
+  "version": 10,
   "weekStart": ""
 }
