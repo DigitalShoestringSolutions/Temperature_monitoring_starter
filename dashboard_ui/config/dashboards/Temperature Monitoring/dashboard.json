@@ -278,7 +278,7 @@
         },
         "mergeValues": true,
         "rowHeight": 0.9,
-        "showValue": "auto",
+        "showValue": "never",
         "tooltip": {
           "mode": "single",
           "sort": "none"
@@ -416,6 +416,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 15,
+  "version": 4,
   "weekStart": ""
 }
