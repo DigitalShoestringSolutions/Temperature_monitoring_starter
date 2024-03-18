@@ -1,0 +1,8 @@
+# Recipie for Shoestring Solution: Temperature Monitoring
+
+# ServiceModuleName=versionname
+
+SetupLogging=master
+Grafana=master
+InfluxDB=master
+MQTT=master
