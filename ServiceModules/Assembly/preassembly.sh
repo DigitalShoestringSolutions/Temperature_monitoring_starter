@@ -11,4 +11,4 @@ git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler $SCR
 
 # Run Shotestring Assembler
 echo "Running Shoestring Assembler..."
-python3 $SCRIPT_DIR/ShoestringAssembler/assemble.sh
+$SCRIPT_DIR/ShoestringAssembler/assemble.sh
