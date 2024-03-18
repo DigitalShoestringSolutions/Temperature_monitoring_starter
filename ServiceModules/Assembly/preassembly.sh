@@ -2,10 +2,13 @@
 
 # Minimal launcher for the Shoestring Assembler
 
+# Get current working directory
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 # Download Shoestring Assembler
 echo "Downloading Shoestring Assembler..."
-git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler ShoestringAssembler
+git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler $SCRIPT_DIR/ShoestringAssembler
 
 # Run Shotestring Assembler
 echo "Running Shoestring Assembler..."
-python3 .SMDownloader.py
+python3 $SCRIPT_DIR/SMDownloader.py
