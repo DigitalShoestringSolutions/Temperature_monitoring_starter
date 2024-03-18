@@ -4,7 +4,7 @@
 
 # Download Shoestring Assembler
 echo "Downloading Shoestring Assembler..."
-git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler .
+git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler ShoestringAssembler
 
 # Run Shotestring Assembler
 echo "Running Shoestring Assembler..."
