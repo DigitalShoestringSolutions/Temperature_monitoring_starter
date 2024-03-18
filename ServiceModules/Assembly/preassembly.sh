@@ -1,9 +1,11 @@
 #!/bin/bash
 
-echo "this is the preassembly script!"
+# Minimal launcher for the Shoestring Assembler
 
 # Download Shoestring Assembler
-git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler 
+echo "Downloading Shoestring Assembler..."
+git clone https://github.com/DigitalShoestringSolutions/ShoestringAssembler .
 
 # Run Shotestring Assembler
-python3 SMDownloader.py
+echo "Running Shoestring Assembler..."
+python3 .SMDownloader.py
