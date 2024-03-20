@@ -1,5 +1,7 @@
 ServiceModules/
 **/data/*
 !**/.gitkeep
+docker-compose.yml
+docker-compose.yaml
 start_local.sh
 *.DS_Store
