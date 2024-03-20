@@ -6,3 +6,4 @@ SetupLogging=master
 Grafana=master
 Timeseries=feature/recipe-temperature
 MQTT=master
+Sensing=feature/recipe-sensing
