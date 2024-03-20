@@ -33,6 +33,7 @@
 # monitor tasks
 
 # packages
+from pathlib import Path
 import tomli
 import time
 import logging
@@ -45,8 +46,8 @@ logger = logging.getLogger("main")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # move to log config file using python functionality
 
 
-def get_config():
-    with open("./config/config.toml", "rb") as f:
+def get_user_config():
+    with Path(__file__).parents[4].joinpath(Path('UserConfig/sensor_config.toml')).open(mode='rb') as f:
         toml_conf = tomli.load(f)
     logger.info(f"config:{toml_conf}")
     return toml_conf
@@ -84,7 +85,7 @@ def monitor_building_blocks(bbs):
 
 
 if __name__ == "__main__":
-    config = get_config()
+    config = get_user_config()
     # todo set logging level from config file
     if config_valid(config):
         bbs = create_building_blocks(config)
