@@ -1,0 +1,41 @@
+[constants]
+    machine="Machine_1"	#Name of the machine being monitored (can't have spaces)
+
+[threshold]
+    th1 = 50  #for 1 sensor
+
+[sensing]
+    # uncomment the sensor that you are using (default is DS18B20)
+    #adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
+    #adc = "PT100_arduino"
+    adc = "PT100_raspi"
+    #adc = "PT100_raspi_SMHAT"
+    #adc = "AHT20"
+    #adc = "MLX90614_temp"
+    #adc = "SHT30"
+
+[sampling]
+    sample_count = 1
+    sample_interval = 1
+
+[type]
+    #type = "processTemperature"
+    type = "ambientTemperature"
+
+[computing]
+	hardware="Pi4"
+
+[mqtt]
+    broker = "mqtt.docker.local"
+    port = 1883   #common mqtt ports are 1883 and 8883
+    base_topic_template = "temperature_monitoring/{{machine}}"
+
+    #reconnection characteristics
+    # start: timeout = initial,
+    # if timeout < limit then
+    #   timeout = timeout*backoff
+    # else
+    #   timeout = limit
+    reconnect.initial = 5 # seconds
+    reconnect.backoff = 2 # multiplier
+    reconnect.limit = 60 # seconds
