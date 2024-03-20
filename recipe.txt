@@ -4,5 +4,5 @@
 
 SetupLogging=master
 Grafana=master
-InfluxDB=feature/recipe-temperature
+Timeseries=feature/recipe-temperature
 MQTT=master
