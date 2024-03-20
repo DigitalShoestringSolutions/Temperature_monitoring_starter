@@ -1,7 +1,5 @@
 version: "2"
 
-services:
-
 networks:
      internal:
          name: shoestring-internal
