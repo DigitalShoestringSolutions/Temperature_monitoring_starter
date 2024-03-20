@@ -1,24 +1,6 @@
 version: "2"
 
 services:
- 
-   
-    temperature-collection:
-        extends:
-            file: temperature_dc/app.yml
-            service: app
-        networks:
-            internal:
-                aliases:
-                    - temperature-dc.docker.local
-        logging:
-            driver: syslog
-            options:
-                tag: docker-temperature-dc
-        restart: unless-stopped
-        depends_on:
-            - "mqtt_broker"
- 
 
 networks:
      internal:
