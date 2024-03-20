@@ -3,7 +3,7 @@
 # ServiceModuleName=versionname
 
 SetupLogging=master
-Grafana=master
+Grafana=feature/recipe
 Timeseries=feature/recipe-temperature
 MQTT=master
 Sensing=feature/recipe-sensing
