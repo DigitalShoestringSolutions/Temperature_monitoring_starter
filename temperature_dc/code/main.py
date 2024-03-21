@@ -85,7 +85,7 @@ def monitor_building_blocks(bbs):
 
 
 if __name__ == "__main__":
-    config = get_user_config()
+    config = get_config()
     # todo set logging level from config file
     if config_valid(config):
         bbs = create_building_blocks(config)
