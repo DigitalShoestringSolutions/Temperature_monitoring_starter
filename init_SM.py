@@ -14,7 +14,14 @@
 
 from pathlib import Path
 import shutil
-shutil.copyfile(str(Path(__file__).parents[3].joinpath("UserConfig/sensor_config.toml")), str(Path(__file__).parents[0].joinpath("temperature_dc/config/sensor_config.toml")))
+
+# Note that due to the dubious exec(f.read()) that actually runs this script, 
+#   Path(__file__) returns the Assembly/ShoestringAssembler location!
+
+copy_from = str(Path(__file__).parents[3].joinpath("UserConfig/sensor_config.toml"))
+copy_to = str(Path(__file__).parents[2].joinpath("Sensing/temperature_dc/config/sensor_config.toml"))
+
+shutil.copyfile(copy_from, copy_to)
 
 # A forseeable problem with this approach is that the config file must be edited before this script is run,
 # If the userconfig is edited after the service modules have been downloaded, it won't be loaded. 
