@@ -2,7 +2,7 @@
 
 # ServiceModuleName=versionname
 
-SetupLogging=master
+SetupLogging=feature/recipe
 Grafana=feature/recipe
 Timeseries=feature/recipe-temperature
 MQTT=feature/recipe
