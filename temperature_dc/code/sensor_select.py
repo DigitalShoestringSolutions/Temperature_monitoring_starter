@@ -134,6 +134,7 @@ class PT100_raspi_sequentmicrosystems_HAT:
         self.RTD_ADC = RTDHAT
 
     def ambient_temp(self):
+        logger.info("TemperatureMeasureBuildingBlock- PT100_raspi_sequentmicrosystems_HAT started")
         return self.RTD_ADC.get_poly5(0, 6) # hard coding first layer, channel "RTD6". To be made configurable.
 
 
