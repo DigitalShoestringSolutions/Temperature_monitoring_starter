@@ -1,13 +1,14 @@
 # ----------------------------------------------------------------------
 #
-#    Power Monitoring (Basic solution) -- This digital solution measures,
-#    reports and records both AC power and current consumed by an electrical 
-#    equipment, so that its energy consumption can be understood and 
-#    taken action upon. This version comes with one current transformer 
-#    clamp of 20A that is buckled up to the electric line the equipment 
-#    is connected to. The solution provides a Grafana dashboard that 
-#    displays current and power consumption, and an InfluxDB database 
-#    to store timestamp, current and power. 
+#    Temperature Monitoring (Basic solution) -- This digital solution enables, measures,
+#    reports and records different  types of temperatures (contact, air, radiated)
+#    so that the temperature conditions surrounding a process can be understood and 
+#    taken action upon. Suppored sensors include 
+#    k-type thermocouples, RTDs, air samplers, and NIR-based sensors.
+#    The solution provides a Grafana dashboard that 
+#    displays the temperature timeseries, set threshold value, and a state timeline showing 
+#    the chnage in temperature. An InfluxDB database is used to store timestamp, temperature, 
+#    threshold and status. 
 #
 #    Copyright (C) 2022  Shoestring and University of Cambridge
 #
