@@ -111,7 +111,7 @@ class PT100_arduino:
         self.ser.close()
 
 
-class PT100_raspi:
+class PT100_raspi_MAX31865:
 
     def __init__(self):
         import adc.MAX31865 as MAX31865
@@ -120,7 +120,7 @@ class PT100_raspi:
         self.MyRTD = MAX31865.PT_RTD(100)
 
     def ambient_temp(self):
-        logger.info("TemperatureMeasureBuildingBlock- PT100_raspi started")
+        logger.info("TemperatureMeasureBuildingBlock- PT100_raspi_MAX31865 started")
         return self.MyRTD(self.MyMax())
 
     def close(self):

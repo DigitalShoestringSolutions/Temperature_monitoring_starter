@@ -118,8 +118,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             sensor = sen.aht20()
         elif self.config['sensing']['adc'] == 'PT100_arduino':
             sensor = sen.PT100_arduino()
-        elif self.config['sensing']['adc'] == 'PT100_raspi':
-            sensor = sen.PT100_raspi()
+        elif self.config['sensing']['adc'] == 'PT100_raspi_MAX31865':
+            sensor = sen.PT100_raspi_MAX31865()
         elif self.config['sensing']['adc'] == 'PT100_raspi_SMHAT':
             sensor = sen.PT100_raspi_sequentmicrosystems_HAT()
 
