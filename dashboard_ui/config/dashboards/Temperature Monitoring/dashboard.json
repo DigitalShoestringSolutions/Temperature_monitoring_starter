@@ -87,7 +87,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
+        "h": 9,
         "w": 18,
         "x": 0,
         "y": 0
@@ -179,7 +179,7 @@
         ]
       },
       "gridPos": {
-        "h": 15,
+        "h": 9,
         "w": 6,
         "x": 18,
         "y": 0
@@ -266,7 +266,7 @@
         "h": 7,
         "w": 18,
         "x": 0,
-        "y": 15
+        "y": 9
       },
       "id": 8,
       "options": {
@@ -348,7 +348,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 15
+        "y": 9
       },
       "id": 4,
       "options": {
@@ -416,6 +416,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }
