@@ -12,7 +12,7 @@
     #adc = "PT100_arduino"
     #adc = "PT100_raspi_MAX31865"
     adc = "PT100_raspi_SMHAT"
-    #adc = "K-type_MAX31855"
+    #adc = "K-type_DFRobot_MAX31855"
 
     # Air temperature sensors:
     #adc = "AHT20"
