@@ -111,8 +111,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             sensor = sen.MLX90614()
         elif self.config['sensing']['adc'] == 'W1ThermSensor':
             sensor = sen.W1Therm()
-        elif self.config['sensing']['adc'] == 'K-type':
-            sensor = sen.k_type()
+        elif self.config['sensing']['adc'] == 'K-type_MAX31855':
+            sensor = sen.k_type_MAX31855()
         elif self.config['sensing']['adc'] == 'AHT20':
             sensor = sen.aht20()
         elif self.config['sensing']['adc'] == 'SHT30':

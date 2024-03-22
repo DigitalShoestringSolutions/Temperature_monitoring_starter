@@ -59,7 +59,7 @@ logger = logging.getLogger("main.measure.sensor")
 
 
 
-class k_type:
+class k_type_MAX31855:
     # https://github.com/DFRobot/DFRobot_MAX31855/tree/main/raspberrypi/python
     def __init__(self):
         import adc.DFRobot_MAX31855 as DFRobot_MAX31855
