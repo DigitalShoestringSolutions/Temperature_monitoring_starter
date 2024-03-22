@@ -4,11 +4,12 @@
 [threshold]
     th1 = 50  #for 1 sensor
 
-
 [sensing]
     # uncomment the sensor that you are using (default is DS18B20)
-    adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
+    #adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
     #adc = "PT100_arduino"
+    #adc = "PT100_raspi_MAX31865"
+    adc = "PT100_raspi_SMHAT"
     #adc = "AHT20"
     #adc = "MLX90614_temp"
     #adc = "SHT30"
@@ -20,8 +21,6 @@
 [type]
     #type = "processTemperature"
     type = "ambientTemperature"
-
-
 
 [computing]
 	hardware="Pi4"
