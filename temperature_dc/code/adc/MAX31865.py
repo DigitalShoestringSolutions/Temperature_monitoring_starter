@@ -1,4 +1,4 @@
-# toby_max31865.py
+# MAX31865.py
 # Toby Harris 2024 @ IfM Engage
 # Usage: see test section at end of file
 
