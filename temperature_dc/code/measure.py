@@ -107,8 +107,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
         Threshold = self.config['threshold']['th1']                # User sets the threshold in the config file
 
-        if self.config['sensing']['adc'] == 'MLX90614_temp':
-            sensor = sen.MLX90614_temp()
+        if self.config['sensing']['adc'] == 'MLX90614':
+            sensor = sen.MLX90614()
         elif self.config['sensing']['adc'] == 'W1ThermSensor':
             sensor = sen.W1Therm()
         elif self.config['sensing']['adc'] == 'K-type':
@@ -135,29 +135,15 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
 
             # Collect samples from ADC
-            
-            if self.config['type']['type'] == 'processTemperature':
+            try:
+                sample = sensor.get_temperature()
+                # sample = sensor
+                logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
+                sample_accumulator += sample
+                num_samples+=1
+            except Exception as e:
+                logger.error(f"Sampling led to exception{e}")
 
-                # Collect samples from ADC
-                try:
-                    sample = sensor.object_temp()
-                    # sample = sensor
-                    logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
-                    sample_accumulator += sample
-                    num_samples+=1
-                except Exception as e:
-                    logger.error(f"Sampling led to exception{e}")
-            elif self.config['type']['type'] == 'ambientTemperature':
-                try:
-                    sample = sensor.ambient_temp()
-                    # sample = sensor
-                    logger.info("Ambient TemperatureMeasureBuildingBlock- STAGE-3 done")
-                    sample_accumulator += sample
-                    num_samples+=1
-                except Exception as e:
-                    logger.error(f"Sampling led to exception{e}")
-            else:
-                logger.info("config ambient or process temperature first!")
 
             # handle timestamps and timezones
             if time.time() > next_check:
@@ -205,5 +191,3 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
     def dispatch(self, output):
         logger.info(f"dispatch to { output['path']} of {output['payload']}")
         self.zmq_out.send_json({'path': output.get('path', ""), 'payload': output['payload']})
-
-
