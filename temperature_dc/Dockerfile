@@ -1,8 +1,8 @@
 # ----------------------------------------------------------------------
 #
-#    Dockerfile script -- This file is part of the Temperature Monitoring distri#    bution. It contains all the commands needed to 
-#    assemble an image of the solution on a Raspberry Pi 4b with raspbian 
-#    OS version 11 (bullseye) 64 bits. 
+#    Dockerfile script -- This file is part of the Temperature Monitoring distribution. 
+#    It contains all the commands needed to assemble an image of the solution
+#    on a Raspberry Pi 4b with raspbian OS version 11 (bullseye) 64 bits. 
 #
 #    Copyright (C) 2023  Shoestring and University of Cambridge
 #

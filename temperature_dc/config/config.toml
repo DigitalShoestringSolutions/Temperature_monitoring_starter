@@ -5,22 +5,25 @@
     th1 = 50  #for 1 sensor
 
 [sensing]
-    # uncomment the sensor that you are using (default is DS18B20)
+    # uncomment (remove the leading #) from the sensor that you are using:
+
+    # Contact temperature sensors:
     #adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
     #adc = "PT100_arduino"
     #adc = "PT100_raspi_MAX31865"
     adc = "PT100_raspi_SMHAT"
+    #adc = "K-type_DFRobot_MAX31855"
+
+    # Air temperature sensors:
     #adc = "AHT20"
-    #adc = "MLX90614_temp"
     #adc = "SHT30"
+
+    # Infrared temperature sensors:
+    #adc = "MLX90614"
 
 [sampling]
     sample_count = 1
     sample_interval = 1
-
-[type]
-    #type = "processTemperature"
-    type = "ambientTemperature"
 
 [computing]
 	hardware="Pi4"
