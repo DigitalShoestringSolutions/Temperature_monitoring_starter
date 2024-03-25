@@ -71,7 +71,7 @@ class k_type_DFRobot_MAX31855:
 
 
     def get_temperature(self):
-        logger.info("TemperatureMeasureBuildingBlock- k-type started")
+        logger.info("TemperatureMeasureBuildingBlock- k_type_DFRobot_MAX31855 started")
         return self.max31855.read_celsius()
 
 
@@ -87,6 +87,7 @@ class k_type_MAX6675:
         self.max6675.set_pin(self.cs, self.sck, self.so, 1) #[unit : 0 - raw, 1 - Celsius, 2 - Fahrenheit]
     
     def get_temperature(self):
+        logger.info("TemperatureMeasureBuildingBlock- k_type_MAX6675 started")
         return self.max6675.read_temp(self.cs)
 
 
