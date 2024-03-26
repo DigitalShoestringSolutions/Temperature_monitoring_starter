@@ -1,9 +1,12 @@
 services: 
    
     temperature-collection:
-        extends:
-            file: temperature_dc/app.yml
-            service: app
+        build: .
+        privileged: true
+        devices:
+            - "/dev/ttyACM0:/dev/ttyACM0"
+        volumes:
+            - ./temperature_dc/config:/app/config
         networks:
             internal:
                 aliases:

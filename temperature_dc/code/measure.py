@@ -1,15 +1,14 @@
 # ----------------------------------------------------------------------
 #
 #    Temperature Monitoring (Basic solution) -- This digital solution enables, measures,
-#    reports and records different  types of temperatures (ambient, process, equipment)
+#    reports and records different  types of temperatures (contact, air, radiated)
 #    so that the temperature conditions surrounding a process can be understood and 
-#    taken action upon. This version can work for 4 types of temperature sensors (now)
-#    which include k-type, RTD, ambient (AHT20), and NIR-based sensors. 
+#    taken action upon. Suppored sensors include 
+#    k-type thermocouples, RTDs, air samplers, and NIR-based sensors.
 #    The solution provides a Grafana dashboard that 
 #    displays the temperature timeseries, set threshold value, and a state timeline showing 
 #    the chnage in temperature. An InfluxDB database is used to store timestamp, temperature, 
 #    threshold and status. 
-#
 #
 #    Copyright (C) 2022  Shoestring and University of Cambridge
 #
@@ -108,18 +107,22 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
         Threshold = self.config['threshold']['th1']                # User sets the threshold in the config file
 
-        if self.config['sensing']['adc'] == 'MLX90614_temp':
-            sensor = sen.MLX90614_temp()
+        if self.config['sensing']['adc'] == 'MLX90614':
+            sensor = sen.MLX90614()
         elif self.config['sensing']['adc'] == 'W1ThermSensor':
             sensor = sen.W1Therm()
-        elif self.config['sensing']['adc'] == 'K-type':
-            sensor = sen.k_type()
+        elif self.config['sensing']['adc'] == 'K-type_DFRobot_MAX31855':
+            sensor = sen.k_type_DFRobot_MAX31855()
+        elif self.config['sensing']['adc'] == 'K-type_MAX6675':
+            sensor = sen.k_type_MAX6675()
         elif self.config['sensing']['adc'] == 'AHT20':
             sensor = sen.aht20()
+        elif self.config['sensing']['adc'] == 'SHT30':
+            sensor = sen.sht30()
         elif self.config['sensing']['adc'] == 'PT100_arduino':
             sensor = sen.PT100_arduino()
-        elif self.config['sensing']['adc'] == 'PT100_raspi':
-            sensor = sen.PT100_raspi()
+        elif self.config['sensing']['adc'] == 'PT100_raspi_MAX31865':
+            sensor = sen.PT100_raspi_MAX31865()
         elif self.config['sensing']['adc'] == 'PT100_raspi_SMHAT':
             sensor = sen.PT100_raspi_sequentmicrosystems_HAT()
 
@@ -136,29 +139,15 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
 
             # Collect samples from ADC
-            
-            if self.config['type']['type'] == 'processTemperature':
+            try:
+                sample = sensor.get_temperature()
+                # sample = sensor
+                logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
+                sample_accumulator += sample
+                num_samples+=1
+            except Exception as e:
+                logger.error(f"Sampling led to exception{e}")
 
-                # Collect samples from ADC
-                try:
-                    sample = sensor.object_temp()
-                    # sample = sensor
-                    logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
-                    sample_accumulator += sample
-                    num_samples+=1
-                except Exception as e:
-                    logger.error(f"Sampling led to exception{e}")
-            elif self.config['type']['type'] == 'ambientTemperature':
-                try:
-                    sample = sensor.ambient_temp()
-                    # sample = sensor
-                    logger.info("Ambient TemperatureMeasureBuildingBlock- STAGE-3 done")
-                    sample_accumulator += sample
-                    num_samples+=1
-                except Exception as e:
-                    logger.error(f"Sampling led to exception{e}")
-            else:
-                logger.info("config ambient or process temperature first!")
 
             # handle timestamps and timezones
             if time.time() > next_check:
@@ -206,5 +195,3 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
     def dispatch(self, output):
         logger.info(f"dispatch to { output['path']} of {output['payload']}")
         self.zmq_out.send_json({'path': output.get('path', ""), 'payload': output['payload']})
-
-

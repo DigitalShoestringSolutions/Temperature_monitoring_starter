@@ -1,10 +1,10 @@
 # ----------------------------------------------------------------------
 #
 #    Temperature Monitoring (Basic solution) -- This digital solution enables, measures,
-#    reports and records different  types of temperatures (ambient, process, equipment)
+#    reports and records different  types of temperatures (contact, air, radiated)
 #    so that the temperature conditions surrounding a process can be understood and 
-#    taken action upon. This version can work for 4 types of temperature sensors (now)
-#    which include k-type, RTD, ambient (AHT20), and NIR-based sensors. 
+#    taken action upon. Suppored sensors include 
+#    k-type thermocouples, RTDs, air samplers, and NIR-based sensors.
 #    The solution provides a Grafana dashboard that 
 #    displays the temperature timeseries, set threshold value, and a state timeline showing 
 #    the chnage in temperature. An InfluxDB database is used to store timestamp, temperature, 
@@ -33,7 +33,6 @@
 # monitor tasks
 
 # packages
-from pathlib import Path
 import tomli
 import time
 import logging
@@ -45,10 +44,10 @@ import wrapper
 logger = logging.getLogger("main")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # move to log config file using python functionality
 
+
 def get_config():
     with open("./config/sensor_config.toml", "rb") as f:
         toml_conf = tomli.load(f)
-
     logger.info(f"config:{toml_conf}")
     return toml_conf
 
