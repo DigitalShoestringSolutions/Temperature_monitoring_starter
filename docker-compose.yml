@@ -6,7 +6,7 @@ services:
         devices:
             - "/dev/ttyACM0:/dev/ttyACM0"
         volumes:
-            - ./config:/app/config
+            - ./temperature_dc/config:/app/config
 
         networks:
             internal:
