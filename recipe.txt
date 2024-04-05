@@ -4,6 +4,6 @@
 
 SetupLogging=feature/recipe
 Grafana=feature/recipe
-Timeseries=feature/recipe-temperature
+Timeseries=feature/recipe
 MQTT=feature/recipe
 Sensing=feature/recipe-sensing
