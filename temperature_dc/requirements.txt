@@ -1,3 +1,6 @@
+# Each dependency must by accompanied by a version number, stated as explicitly as possible
+# Else expect your work to fall apart when a dependency out of our control is updated!
+#
 paho-mqtt==1.6.1
 chevron==0.14.0
 tomli==2.0.1
