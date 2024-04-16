@@ -7,7 +7,7 @@ bcr-libraries
 spidev
 rpi.gpio
 PyMLX90614
-w1thermsensor
+w1thermsensor==2.0.0
 adafruit-circuitpython-ahtx0
 board
 pyserial
