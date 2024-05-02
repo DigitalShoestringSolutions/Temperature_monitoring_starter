@@ -150,5 +150,5 @@ class TemperatureMonitoringCalculation:
         PowerValue = self.phases * RMSCTClampCurrent * self.lineVoltage
         logger.info(f"temperature_reading: {AmbientTemp}")
         logger.debug(f"Temp: {AmbientTemp} Threshold: {Threshold} AlertStatus: {AlertVal}")
-        return {"Temperature": str(AmbientTemp), "AlertStatus": str(AlertVal)}
+        return {"Temperature": AmbientTemp, "AlertStatus": AlertVal}
 

@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 7,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -87,8 +87,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 10,
+        "w": 18,
         "x": 0,
         "y": 0
       },
@@ -111,11 +111,11 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |>filter(fn: (r) => r[\"Threshold\"] == \"${threshold}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group(columns: [\"machine\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
-      "title": "Ambient temperature",
+      "title": "Temperature",
       "type": "timeseries"
     },
     {
@@ -173,15 +173,31 @@
               {
                 "id": "displayName",
                 "value": "Alert Status"
+              },
+              {
+                "id": "max",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "temp"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Temperature"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
+        "h": 19,
+        "w": 6,
+        "x": 18,
         "y": 0
       },
       "id": 6,
@@ -189,7 +205,7 @@
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "vertical",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -206,11 +222,25 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> filter(fn: (r) => r[\"Threshold\"] == \"${threshold}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group(columns:[\"machine\",\"_field\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> pivot (rowKey: [\"_time\"], columnKey:[\"_field\"], valueColumn: \"_value\")\n  |> keep(columns: [\"_time\",\"AlertVal\",\"temp\"])",
           "refId": "A"
         }
       ],
       "title": "Alert Status & Temperature Value",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "AlertVal": 2,
+              "_time": 0,
+              "temp": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -263,10 +293,10 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 4,
         "w": 18,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 8,
       "options": {
@@ -290,7 +320,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AlertVal\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |>filter(fn: (r) => r[\"Threshold\"] == \"${threshold}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AlertVal\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group (columns: [\"machine\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: false)\n  |> pivot (rowKey: [\"_time\"], columnKey:[\"_field\"], valueColumn: \"_value\")",
           "refId": "A"
         }
       ],
@@ -305,79 +335,101 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "semi-dark-green",
-                  "index": 0,
-                  "text": "OK"
-                },
-                "1": {
-                  "color": "dark-red",
-                  "index": 1,
-                  "text": "HIGH"
-                }
-              },
-              "type": "value"
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          ],
+          },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 1
+                "value": 80
               }
             ]
-          }
+          },
+          "unit": "celsius"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 18,
-        "y": 9
+        "h": 5,
+        "w": 18,
+        "x": 0,
+        "y": 14
       },
-      "id": 4,
+      "id": 10,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AlertVal\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |>filter(fn: (r) => r[\"Threshold\"] == \"${threshold}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> group(columns: [\"machine\"])\n  |> keep(columns: [\"Threshold\",\"_time\"])",
           "refId": "A"
         }
       ],
-      "title": "Alert Status",
-      "type": "stat"
+      "title": "Alert Threshold",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "Threshold"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
     }
   ],
   "refresh": "5s",
@@ -389,52 +441,37 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "Machine_1",
-          "value": "Machine_1"
-        },
-        "hide": 0,
-        "name": "machine",
-        "options": [
-          {
-            "selected": true,
-            "text": "Machine_1",
-            "value": "Machine_1"
-          }
-        ],
-        "query": "Machine_1",
-        "skipUrlSync": false,
-        "type": "textbox"
-      },
-      {
-        "current": {
           "selected": false,
-          "text": "50",
-          "value": "50"
+          "text": "Granulator",
+          "value": "Granulator"
         },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb"
+        },
+        "definition": "from(bucket: \"temperature_monitoring\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> keep(columns: [\"machine\"])\n  |> distinct(column: \"machine\")\n  |> filter(fn: (r) => r[\"machine\"] != \"null\")\n  |> group()",
         "hide": 0,
-        "name": "threshold",
-        "options": [
-          {
-            "selected": true,
-            "text": "50",
-            "value": "50"
-          }
-        ],
-        "query": "50",
+        "includeAll": false,
+        "multi": false,
+        "name": "machine",
+        "options": [],
+        "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> keep(columns: [\"machine\"])\n  |> distinct(column: \"machine\")\n  |> filter(fn: (r) => r[\"machine\"] != \"null\")\n  |> group()",
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 3,
+  "version": 16,
   "weekStart": ""
 }
