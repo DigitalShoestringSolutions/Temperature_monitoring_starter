@@ -105,7 +105,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
         #---------------- TEST MODULE 2 -------------------
 
-        Threshold = self.config['threshold']['th1']                # User sets the threshold in the config file
+        Threshold = float(self.config['threshold']['th1'])                # User sets the threshold in the config file
 
         if self.config['sensing']['adc'] == 'MLX90614':
             sensor = sen.MLX90614()
@@ -166,7 +166,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 print(average_sample)
                 logger.info(f"temperature_reading: {average_sample}")
 
-                if average_sample > float(Threshold):
+                if average_sample > Threshold:
                     AlertVal = 1
                 else:
                     AlertVal = 0
@@ -177,7 +177,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 # convert
                 # results = calculation.calculate(average_sample)
                 # payload = {**results, **self.constants, "timestamp": timestamp}
-                payload = {"machine": self.constants['machine'], "temp": str(average_sample), "AlertVal": str(AlertVal), "Threshold": str(Threshold), "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
+                payload = {"machine": self.constants['machine'], "temp": average_sample, "AlertVal": AlertVal, "Threshold": Threshold, "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
 
                 # send
                 output = {"path": "", "payload": payload}
