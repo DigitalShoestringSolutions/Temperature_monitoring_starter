@@ -26,7 +26,7 @@
     sample_interval = 1
 
 [computing]
-	hardware="Pi4"
+    hardware="Pi4"
 
 [mqtt]
     broker = "mqtt.docker.local"
