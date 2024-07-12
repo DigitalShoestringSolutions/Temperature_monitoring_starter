@@ -8,10 +8,10 @@
     # uncomment (remove the leading #) from the sensor that you are using:
 
     # Contact temperature sensors:
-    #adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 or PIN 7 of the RPI4
+    adc = "W1ThermSensor"   # Always connect the DS18B20 sensor to GPIO4 (physical pin 7) of the RPi4
     #adc = "PT100_arduino"
     #adc = "PT100_raspi_MAX31865"
-    adc = "PT100_raspi_SMHAT"
+    #adc = "PT100_raspi_SMHAT"
     #adc = "K-type_DFRobot_MAX31855"
 
     # Air temperature sensors:
