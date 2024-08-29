@@ -418,19 +418,19 @@
       {
         "current": {
           "selected": false,
-          "text": "MyRD2",
-          "value": "MyRD2"
+          "text": "",
+          "value": ""
         },
         "hide": 0,
         "name": "machine",
         "options": [
           {
             "selected": true,
-            "text": "MyRD2",
-            "value": "MyRD2"
+            "text": "",
+            "value": ""
           }
         ],
-        "query": "MyRD2",
+        "query": "",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -444,6 +444,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
