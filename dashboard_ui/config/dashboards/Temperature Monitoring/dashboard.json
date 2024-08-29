@@ -340,7 +340,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": ""
+                "value": "  "
               }
             ]
           }
@@ -511,6 +511,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
