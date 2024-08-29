@@ -113,7 +113,7 @@
             "uid": "influxdb"
           },
           "hide": false,
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group(columns: [\"machine\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> group(columns: [\"machine\"])\n  \n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")\n\n",
           "refId": "A"
         },
         {
@@ -122,22 +122,26 @@
             "uid": "influxdb"
           },
           "hide": false,
-          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> group(columns: [\"machine\"])\r\n  |> keep(columns: [\"Threshold\",\"_time\"])\r\n",
+          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Threshold\")\r\n  |> group(columns: [\"Threshold\"])\r\n\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\r\n  |> yield(name: \"mean\")",
           "refId": "B"
         }
       ],
       "title": "Temperature History",
       "transformations": [
         {
-          "id": "convertFieldType",
+          "id": "joinByField",
           "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "Threshold"
-              }
-            ],
-            "fields": {}
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Value 2": "Threshold"
+            }
           }
         }
       ],
@@ -231,7 +235,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group(columns: [\"machine\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -403,7 +407,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AlertVal\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> group(columns: [\"machine\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AlertVal\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -420,20 +424,20 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "Machine_1",
-          "value": "Machine_1"
+          "selected": false,
+          "text": "",
+          "value": ""
         },
         "hide": 0,
         "name": "machine",
         "options": [
           {
             "selected": true,
-            "text": "Machine_1",
-            "value": "Machine_1"
+            "text": "",
+            "value": ""
           }
         ],
-        "query": "Machine_1",
+        "query": "",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -447,6 +451,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
