@@ -1,8 +1,9 @@
 [constants]
     machine="Machine_1"	#Name of the machine being monitored (can't have spaces)
 
-[threshold]
-    th1 = 50  #for 1 sensor
+[threshold] # in degrees C
+    low = 25
+    high = 30 
 
 [sensing]
     # uncomment (remove the leading #) from the sensor that you are using:

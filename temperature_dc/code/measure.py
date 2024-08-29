@@ -65,11 +65,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
         self.collection_interval = config['sampling']['sample_interval']
         self.sample_count = config['sampling']['sample_count']
 
-       
 
-        # logger.info("TemperatureMeasureBuildingBlock- STAGE-1 done")
-        # self.sensor = config['sensing']['adc']
-        # self.Threshold = config['threshold']['th1']                # User sets the threshold in the config file
 
     def do_connect(self):
         self.zmq_out = context.socket(self.zmq_conf['type'])
@@ -93,19 +89,11 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
         run = True
         period = self.collection_interval
 
-        # get correct ADC module
-        #try:
-        #    adc_module = importlib.import_module(f"adc.{self.adc_module}")
-        #    logger.debug(f"Imported {self.adc_module}")
-        #except ModuleNotFoundError as e:
-        #    logger.error(f"Unable to import module {self.adc_module}. Stopping!!")
-        #    return
 
-        #adc = adc_module.ADC(self.config)
+        # Load user-set thresholds from the config file
+        th_low = float(self.config['threshold']['low'])
+        th_high = float(self.config['threshold']['high'])
 
-        #---------------- TEST MODULE 2 -------------------
-
-        Threshold = float(self.config['threshold']['th1'])                # User sets the threshold in the config file
 
         if self.config['sensing']['adc'] == 'MLX90614':
             sensor = sen.MLX90614()
@@ -166,8 +154,11 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 print(average_sample)
                 logger.info(f"temperature_reading: {average_sample}")
 
-                if average_sample > Threshold:
+                # Compare against thresholds 
+                if average_sample > th_high:
                     AlertVal = 1
+                elif average_sample < th_low:
+                    AlertVal = -1
                 else:
                     AlertVal = 0
 
@@ -175,9 +166,8 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 timestamp = datetime.datetime.now(tz=tz).isoformat()
 
                 # convert
-                # results = calculation.calculate(average_sample)
                 # payload = {**results, **self.constants, "timestamp": timestamp}
-                payload = {"machine": self.constants['machine'], "temp": average_sample, "AlertVal": AlertVal, "Threshold": Threshold, "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
+                payload = {"machine": self.constants['machine'], "temp": average_sample, "AlertVal": AlertVal, "ThresholdLow": th_low, "ThresholdHigh": th_high, "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
 
                 # send
                 output = {"path": "", "payload": payload}
