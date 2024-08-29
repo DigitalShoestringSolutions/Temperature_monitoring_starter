@@ -113,8 +113,17 @@
             "uid": "influxdb"
           },
           "hide": false,
-          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\" or r[\"_field\"] == \"Threshold\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"temperature_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n\n  |> filter(fn: (r) => r[\"_field\"] == \"temp\")\n  |> group(columns: [\"machine\"])\n  \n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")\n\n",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Threshold\")\r\n  |> group(columns: [\"Threshold\"])\r\n\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\r\n  |> yield(name: \"mean\")",
+          "refId": "B"
         }
       ],
       "title": "Temperature History",
@@ -131,9 +140,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Threshold {machine=\"MyRD2\", name=\"temperature_reading\", sensor=\"PT100_raspi_MAX31865\"}": "Threshold",
-              "Time": "",
-              "temp {machine=\"MyRD2\", name=\"temperature_reading\", sensor=\"PT100_raspi_MAX31865\"}": "Temperature"
+              "Value 2": "Threshold"
             }
           }
         }
@@ -437,13 +444,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
