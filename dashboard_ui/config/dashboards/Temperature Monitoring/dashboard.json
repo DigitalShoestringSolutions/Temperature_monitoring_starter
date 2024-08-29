@@ -420,33 +420,33 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "Machine_1",
-          "value": "Machine_1"
+          "selected": false,
+          "text": "MyRD2",
+          "value": "MyRD2"
         },
         "hide": 0,
         "name": "machine",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Machine_1",
             "value": "Machine_1"
           }
         ],
-        "query": "Machine_1",
+        "query": "MyRD2",
         "skipUrlSync": false,
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
