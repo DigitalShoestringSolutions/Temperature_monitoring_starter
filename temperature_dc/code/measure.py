@@ -90,7 +90,10 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
         period = self.collection_interval
 
 
-        Threshold = float(self.config['threshold']['th1'])                # User sets the threshold in the config file
+        # Load user-set thresholds from the config file
+        th_low = float(self.config['threshold']['low'])
+        th_high = float(self.config['threshold']['high'])
+
 
         if self.config['sensing']['adc'] == 'MLX90614':
             sensor = sen.MLX90614()
@@ -151,8 +154,11 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
                 print(average_sample)
                 logger.info(f"temperature_reading: {average_sample}")
 
-                if average_sample > Threshold:
+                # Compare against thresholds 
+                if average_sample > th_high:
                     AlertVal = 1
+                elif average_sample < th_low:
+                    AlertVal = -1
                 else:
                     AlertVal = 0
 
@@ -161,7 +167,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
 
                 # convert
                 # payload = {**results, **self.constants, "timestamp": timestamp}
-                payload = {"machine": self.constants['machine'], "temp": average_sample, "AlertVal": AlertVal, "Threshold": Threshold, "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
+                payload = {"machine": self.constants['machine'], "temp": average_sample, "AlertVal": AlertVal, "ThresholdLow": th_low, "ThresholdHigh": th_high, "sensor": self.config['sensing']['adc'], "timestamp": timestamp}
 
                 # send
                 output = {"path": "", "payload": payload}
