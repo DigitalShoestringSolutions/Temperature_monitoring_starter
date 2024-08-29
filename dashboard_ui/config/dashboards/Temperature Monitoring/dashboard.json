@@ -485,21 +485,25 @@
       {
         "current": {
           "selected": false,
-          "text": "",
-          "value": ""
+          "text": "None",
+          "value": "None"
         },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb"
+        },
+        "definition": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: -30d)\r\n  |> keep(columns: [\"machine\"])\r\n  |> distinct(column: \"machine\")\r\n  |> filter(fn: (r) => r[\"machine\"] != \"null\")\r\n  |> group()",
         "hide": 0,
+        "includeAll": false,
+        "multi": false,
         "name": "machine",
-        "options": [
-          {
-            "selected": true,
-            "text": "",
-            "value": ""
-          }
-        ],
-        "query": "",
+        "options": [],
+        "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: -30d)\r\n  |> keep(columns: [\"machine\"])\r\n  |> distinct(column: \"machine\")\r\n  |> filter(fn: (r) => r[\"machine\"] != \"null\")\r\n  |> group()",
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -511,6 +515,6 @@
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
