@@ -43,7 +43,6 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -122,8 +121,17 @@
             "uid": "influxdb"
           },
           "hide": false,
-          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Threshold\")\r\n  |> group(columns: [\"Threshold\"])\r\n\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\r\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n\r\n  |> filter(fn: (r) => r[\"_field\"] == \"ThresholdHigh\")\r\n  |> group(columns: [\"ThresholdHigh\"])\r\n\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\r\n  |> yield(name: \"mean\")",
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "from(bucket: \"temperature_monitoring\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperature_reading\")\r\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\r\n\r\n  |> filter(fn: (r) => r[\"_field\"] == \"ThresholdLow\")\r\n  |> group(columns: [\"ThresholdLow\"])\r\n\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\r\n  |> yield(name: \"mean\")",
+          "refId": "C"
         }
       ],
       "title": "Temperature History",
@@ -140,7 +148,8 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Value 2": "Threshold"
+              "Value 2": "High Threshold",
+              "Value 3": "Low Threshold"
             }
           }
         }
@@ -270,7 +279,7 @@
                 "value": 0
               },
               {
-                "color": "red",
+                "color": "dark-red",
                 "value": 1
               }
             ]
@@ -347,13 +356,18 @@
               "options": {
                 "0": {
                   "color": "semi-dark-green",
-                  "index": 0,
+                  "index": 1,
                   "text": "OK"
                 },
                 "1": {
                   "color": "dark-red",
-                  "index": 1,
+                  "index": 2,
                   "text": "HIGH"
+                },
+                "-1": {
+                  "color": "dark-blue",
+                  "index": 0,
+                  "text": "LOW"
                 }
               },
               "type": "value"
@@ -444,13 +458,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Temperature_starter_solution",
   "uid": "70aiGq34k",
-  "version": 4,
+  "version": 2,
   "weekStart": ""
 }
