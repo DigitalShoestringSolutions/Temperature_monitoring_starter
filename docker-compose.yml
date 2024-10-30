@@ -80,6 +80,16 @@ services:
                 aliases:
                     - mqtt.docker.local
 
+    stats-collector:
+        extends:
+            file: stats_collector/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - stats.docker.local
+        restart: unless-stopped
+
 networks:
      internal:
          name: shoestring-internal
