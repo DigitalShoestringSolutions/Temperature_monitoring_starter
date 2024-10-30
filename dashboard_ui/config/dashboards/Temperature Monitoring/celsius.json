@@ -245,7 +245,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "unit": "celsius"
         },
         "overrides": [
           {
@@ -485,8 +486,8 @@
       {
         "current": {
           "selected": false,
-          "text": "None",
-          "value": "None"
+          "text": "Machine_1",
+          "value": "Machine_1"
         },
         "datasource": {
           "type": "influxdb",
@@ -508,13 +509,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Temperature_starter_solution",
+  "title": "Celsius",
   "uid": "70aiGq34k",
-  "version": 6,
+  "version": 2,
   "weekStart": ""
 }
