@@ -487,8 +487,8 @@
       {
         "current": {
           "selected": true,
-          "text": "Machine_1",
-          "value": "Machine_1"
+          "text": "None",
+          "value": "None"
         },
         "datasource": {
           "type": "influxdb",
