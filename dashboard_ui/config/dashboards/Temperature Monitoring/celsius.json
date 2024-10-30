@@ -486,8 +486,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Machine_1",
-          "value": "Machine_1"
+          "text": "None",
+          "value": "None"
         },
         "datasource": {
           "type": "influxdb",
@@ -509,7 +509,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
