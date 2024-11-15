@@ -24,7 +24,6 @@ FROM python:3
 
 COPY ./requirements.txt /
 RUN pip3 install -r requirements.txt
-RUN git clone https://github.com/DigitalShoestringSolutions/grove.py /grove && cd /grove && pip3 install . && rm -r /grove
 WORKDIR /app
 ADD ./code/ /app
 
