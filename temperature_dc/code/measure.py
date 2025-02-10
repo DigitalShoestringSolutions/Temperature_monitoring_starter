@@ -43,7 +43,7 @@ import serial
 import json
 
 # logging.basicConfig(filename='/app_temp.log', level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger("main.measure")
+logger = logging.getLogger("main.measure") # applies a schema similar to above
 logger.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
 logger.addHandler(console_handler)
@@ -130,7 +130,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             try:
                 sample = sensor.get_temperature()
                 # sample = sensor
-                logger.info("Prorcess TemperatureMeasureBuildingBlock- STAGE-3 done")
+                logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
                 sample_accumulator += sample
                 num_samples+=1
             except Exception as e:
