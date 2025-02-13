@@ -130,7 +130,7 @@ class TemperatureMeasureBuildingBlock(multiprocessing.Process):
             try:
                 sample = sensor.get_temperature()
                 # sample = sensor
-                logger.info("TemperatureMeasureBuildingBlock- STAGE-3 done")
+                logger.debug("adding sample " + str(sample) + " to accululator")
                 sample_accumulator += sample
                 num_samples+=1
             except Exception as e:
